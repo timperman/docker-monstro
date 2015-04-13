@@ -1,5 +1,5 @@
 var nconf = require('nconf'),
-    drone = require('./lib/index');
+    monstro = require('./lib/index');
 
 nconf.env().argv().file('config.json');
-drone({ swarm: nconf.get('swarm'), servers: nconf.get('servers') }).start();
+monstro({ swarm: nconf.get('swarm'), servers: nconf.get('servers') }).start();

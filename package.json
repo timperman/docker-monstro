@@ -1,5 +1,5 @@
 {
-  "name": "docker-swarm-drone",
+  "name": "docker-monstro",
   "version": "0.1.0",
   "description": "A configurable dynamic proxy for Docker Swarm clusters.",
   "main": "lib/index.js",

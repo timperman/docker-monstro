@@ -3,8 +3,6 @@ docker-swarm-drone
 
 A configurable dynamic proxy for Docker Swarm clusters.
 
-### Configuration
-
 ```
 var drone = require('docker-swarm-drone');
 
@@ -16,7 +14,7 @@ Requests are proxied based on a combination of path matching and filtering. Dron
 
 Drone can also transform the proxied request by adding static request headers as defined by "headers" in the path configuration.
 
-```Configuration example
+```Configuration
 {
     "swarm": {
             "dev": {

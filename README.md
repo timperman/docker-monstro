@@ -5,13 +5,18 @@ A configurable dynamic proxy for Docker Swarm clusters.
 
 ### Configuration
 
-Drone uses nconf to load configuration from config.json.
+```
+var drone = require('docker-swarm-drone');
+
+var config = {}; // load config somehow
+drone(config).start();
+```
 
 Requests are proxied based on a combination of path matching and filtering. Drone will consider a container eligible for proxying if all the filters in the path configuration return true. If more than one container is eligible, drone will randomly choose one, resulting in "load balancing" between the eligible containers.
 
 Drone can also transform the proxied request by adding static request headers as defined by "headers" in the path configuration.
 
-```config.json
+```Configuration example
 {
     "swarm": {
             "dev": {

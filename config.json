@@ -1,0 +1,47 @@
+{
+    "swarm": {
+            "dev": {
+                "host": "192.168.99.101",
+                "port": 3376,
+                "protocol": "https",
+                "certPath": "/Users/user/.docker/machine/machines/swarm-master"
+            }
+        },
+    "servers": [
+        {
+            "port": 8081,
+            "paths": {
+                "/": { 
+                    "swarm": "dev",
+                    "filters": {
+                        "compose": {
+                            "project": "dev",
+                            "service": "site"
+                        },
+                        "exposedPort": 8080
+                    },
+                    "headers": {
+                        "CustomHeader": "value"
+                    }
+                },
+                "/cms": { 
+                    "swarm": "dev",
+                    "filters": {
+                        "image": "cms:latest"
+                    }
+                }
+            }
+        },
+        {
+            "port": 2701,
+            "paths": {
+                "/": { 
+                    "swarm": "dev",
+                    "filters": {
+                        "hostname": { "matchType": "compose" },
+                        "exposedPort": 27017
+                    }
+                }
+            }
+        }]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "docker-swarm-drone",
+  "version": "0.1.0",
+  "description": "A configurable dynamic proxy for Docker Swarm clusters.",
+  "main": "lib/index.js",
+  "repository": "",
+  "author": "Brett Timperman <brett.timperman@gmail.com>",
+  "dependencies": {
+    "http-proxy": "~1.10.1",
+    "dockerode": "~2.1.1",
+    "underscore": "~1.8.3",
+    "rx": "~2.5.1"
+  }, 
+  "devDependencies": {
+    "mocha": "~2.2.4",
+    "chai": "~2.2.0",
+    "sinon": "~1.14.1",
+    "rewire": "~2.3.1",
+    "nconf": "~0.7.1"
+  },
+  "scripts": {
+    "test": "mocha -R spec test/*-test.js"
+  }
+}

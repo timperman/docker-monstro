@@ -3,7 +3,6 @@ var expect = require("chai").expect,
     rewire = require("rewire");
 
 var monitor = rewire("../lib/docker-monitor.js"),
-	mockFilters = { exposedPort: sinon.stub(), compose: sinon.stub(), image: sinon.stub() },
 	mockFs = { readFileSync: sinon.stub() },
 	mockRxEventStream = { observable: {}, attach: sinon.spy() },
 	mockDocker = sinon.stub(),
@@ -45,7 +44,6 @@ before(function() {
 
 	monitor.__set__("fs", mockFs);
 	monitor.__set__("Docker", mockDocker);
-	monitor.__set__("filters", mockFilters);
 	monitor.__set__("containerRepository", { create: function() { return mockRepository; } });
 	monitor.__set__("rxEventStream", { create: function() { return mockRxEventStream; } });
 });
@@ -122,11 +120,9 @@ describe("Docker monitor", function(){
 	describe("getProxyTarget", function() {
 		it("should filter containers in repository", function() {
 			var dockerMonitor = monitor({ dev: devConfig });
-			var container1 = { Node: { IP: "1.1" }, Config: { ExposedPorts: { "8080/tcp": {} } }, NetworkSettings: { Ports: { "8080/tcp": [ { HostPort: 1234 } ] } } };
-			var container2 = { Node: { IP: "1.2" }, Config: { ExposedPorts: { "8080/tcp": {} } }, NetworkSettings: { Ports: { "8080/tcp": [ { HostPort: 5678 } ] } } };
+			var container1 = { Id: 1, Node: { IP: "1.1" }, Config: { ExposedPorts: { "8080/tcp": {} } }, NetworkSettings: { Ports: { "8080/tcp": [ { HostPort: 1234 } ] } } };
+			var container2 = { Id: 2, Node: { IP: "1.2" }, Config: { ExposedPorts: { "9080/tcp": {} } }, NetworkSettings: { Ports: { "9080/tcp": [ { HostPort: 5678 } ] } } };
 
-			mockFilters.exposedPort.withArgs(8080).returns(function(input) { return input == container1; });
-			mockFilters.exposedPort.withArgs(9080).returns(function(input) { return input == container2; });
 			mockRepository.get.returns([ container1, container2 ]);
 
 			var target = dockerMonitor.getProxyTarget({ swarm: "dev", filters: { exposedPort: 8080 } });
@@ -142,8 +138,6 @@ describe("Docker monitor", function(){
 
 			mockRepository.get.returns([ container1 ]);
 			var target = dockerMonitor.getProxyTarget({ swarm: "dev", filters: { exposedPort: 8080 } });
-			mockFilters.exposedPort.withArgs(8080).returns(function(input) { return true; });
-
 			expect(target).to.eq("http://2.1:1234");
 		});
 	});

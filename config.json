@@ -1,10 +1,8 @@
 {
     "swarm": {
             "dev": {
-                "host": "192.168.99.101",
-                "port": 3376,
-                "protocol": "https",
-                "certPath": "/Users/user/.docker/machine/machines/swarm-master"
+                "host": "http://localhost",
+                "port": 2376
             }
         },
     "servers": [

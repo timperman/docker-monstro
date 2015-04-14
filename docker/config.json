@@ -1,0 +1,27 @@
+{
+    "swarm": {
+            "dev": {
+                "host": "%REMOTE_HOST%",
+                "port": %REMOTE_PORT%
+            }
+        },
+    "servers": [
+        {
+            "port": 8080,
+            "paths": {
+                "/": { 
+                    "swarm": "dev",
+                    "filters": {
+                        "compose": {
+                            "project": "%COMPOSE_PROJECT_NAME%",
+                            "service": "%COMPOSE_SERVICE_NAME%"
+                        },
+                        "exposedPort": %EXPOSED_PORT%
+                    },
+                    "headers": {
+                        "ProxiedBy": "monstro"
+                    }
+                }
+            }
+        }]
+}

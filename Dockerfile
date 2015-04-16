@@ -1,18 +1,14 @@
 FROM node
 
-ENV REMOTE_HOST localhost
-ENV REMOTE_PORT 2376
-ENV EXPOSED_PORT 8080
-ENV COMPOSE_PROJECT_NAME dev
-ENV COMPOSE_SERVICE_NAME site
+MAINTAINER Brett Timperman <brett.timperman@gmail.com>
 
-ADD . /
-ADD docker/entrypoint.sh /entrypoint.sh
-ADD docker/config.json /config/config.json
+ENV MONSTRO_CONFIG_PATH /config/config.json
 
-EXPOSE 8080
+ADD package.json /package.json
+ADD server.js /server.js
+ADD config.json /config/config.json
+ADD lib /lib
 
-RUN npm install && \
-    chmod 777 /entrypoint.sh
+RUN npm install
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "node", "server.js" ]

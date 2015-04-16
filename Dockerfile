@@ -2,13 +2,13 @@ FROM node
 
 MAINTAINER Brett Timperman <brett.timperman@gmail.com>
 
-ENV MONSTRO_CONFIG_PATH /config/config.json
+ENV MONSTRO_CONFIG_PATH /monstro/config/config.json
 
-ADD package.json /package.json
-ADD server.js /server.js
-ADD config.json /config/config.json
-ADD lib /lib
+ADD . /monstro
 
-RUN npm install
+WORKDIR /monstro
+RUN mkdir -p /monstro/config && \
+    mv /monstro/config.json /monstro/config/config.json && \
+    npm install
 
 ENTRYPOINT [ "node", "server.js" ]

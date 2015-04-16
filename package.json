@@ -9,7 +9,8 @@
     "http-proxy": "~1.10.1",
     "dockerode": "~2.1.1",
     "underscore": "~1.8.3",
-    "rx": "~2.5.1"
+    "rx": "~2.5.1",
+    "express": "~4.12.3"
   }, 
   "devDependencies": {
     "mocha": "~2.2.4",

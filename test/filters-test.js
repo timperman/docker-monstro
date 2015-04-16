@@ -20,10 +20,10 @@ describe("Filters", function(){
         it("should filter containers with the compose project and service name", function(){
 			var containers = [
 				{ ID: 1, Name: "/randomly-assigned" },
-				{ ID: 2, Name: "dev_site_1" },
-				{ ID: 3, Name: "dev_site_2" },
-				{ ID: 4, Name: "test_site_1" },
-				{ ID: 5, Name: "dev_db_1" }
+				{ ID: 2, Name: "/dev_site_1" },
+				{ ID: 3, Name: "/dev_site_2" },
+				{ ID: 4, Name: "/test_site_1" },
+				{ ID: 5, Name: "/dev_db_1" }
 			];
        	 
 			expect(_.filter(containers, filters.compose({ project: "dev", service: "site" })).length).to.be.eq(2);

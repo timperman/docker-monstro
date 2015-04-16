@@ -1,19 +1,20 @@
 {
+    "api": { "port": 9999 }
     "swarm": {
             "dev": {
-                "host": "http://localhost",
+                "host": "http://10.3.152.222",
                 "port": 2376
             }
         },
     "servers": [
         {
-            "port": 8081,
+            "port": 8080,
             "paths": {
                 "/": { 
                     "swarm": "dev",
                     "filters": {
                         "compose": {
-                            "project": "dev",
+                            "project": "brett",
                             "service": "site"
                         },
                         "exposedPort": 8080
@@ -31,7 +32,7 @@
             }
         },
         {
-            "port": 2701,
+            "port": 27017,
             "paths": {
                 "/": { 
                     "swarm": "dev",

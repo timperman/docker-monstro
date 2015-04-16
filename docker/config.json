@@ -1,4 +1,5 @@
 {
+    "api": { "port": 9999 },
     "swarm": {
             "dev": {
                 "host": "%REMOTE_HOST%",

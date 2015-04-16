@@ -1,5 +1,8 @@
 {
-    "api": { "port": 9999 },
+    "api": { 
+        "port": 9999,
+        "allowRemoteKill": false
+    },
     "swarm": {
             "dev": {
                 "fromEnvironment": true

@@ -1,6 +1,7 @@
-var expect = require("chai").expect;
-var filters = require("../lib/filters.js");
-var _ = require("underscore");
+var expect = require("chai").expect,
+    filters = require("../lib/filters.js"),
+    _ = require("underscore"),
+    os = require("os");
  
 describe("Filters", function(){
     describe("exposedPort()", function(){
@@ -10,9 +11,10 @@ describe("Filters", function(){
 				{ ID: 2, Config: { ExposedPorts: { "80/tcp": {}, "8080/tcp": {} } } }
 			];
 
-			expect(_.filter(containers, filters.exposedPort(8080)).length).to.be.eq(1);
-			expect(_.filter(containers, filters.exposedPort(80)).length).to.be.eq(2);
-		 	expect(_.filter(containers, filters.exposedPort(9080)).length).to.be.eq(0);
+			var filterFn = 
+			expect(_.filter(containers, filters.filterFunction("exposedPort", 8080)).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("exposedPort", 80)).length).to.be.eq(2);
+		 	expect(_.filter(containers, filters.filterFunction("exposedPort", 9080)).length).to.be.eq(0);
         });
     });
 
@@ -26,9 +28,9 @@ describe("Filters", function(){
 				{ ID: 5, Name: "/dev_db_1" }
 			];
        	 
-			expect(_.filter(containers, filters.compose({ project: "dev", service: "site" })).length).to.be.eq(2);
-			expect(_.filter(containers, filters.compose({ project: "test", service: "site" })).length).to.be.eq(1);
-			expect(_.filter(containers, filters.compose({ project: "test", service: "db" })).length).to.be.eq(0);
+			expect(_.filter(containers, filters.filterFunction("compose", { project: "dev", service: "site" })).length).to.be.eq(2);
+			expect(_.filter(containers, filters.filterFunction("compose", { project: "test", service: "site" })).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("compose", { project: "test", service: "db" })).length).to.be.eq(0);
         });
     });
 
@@ -42,11 +44,33 @@ describe("Filters", function(){
 				{ ID: 5, Image: "custom/container:v1" }
 			];
        	 
-			expect(_.filter(containers, filters.image("redis")).length).to.be.eq(1);
-			expect(_.filter(containers, filters.image("custom/container")).length).to.be.eq(1);
-			expect(_.filter(containers, filters.image("custom/container:v1")).length).to.be.eq(2);
-			expect(_.filter(containers, filters.image("custom/container:v2")).length).to.be.eq(0);
+			expect(_.filter(containers, filters.filterFunction("image", "redis")).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", "custom/container")).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", "custom/container:v1")).length).to.be.eq(2);
+			expect(_.filter(containers, filters.filterFunction("image", "custom/container:v2")).length).to.be.eq(0);
 			
+        });
+    });
+
+    describe("transformValues()", function(){
+        it("should replace environment values in configuration", function(){
+        	var containers = [{ ID: 1, Image: "ubuntu", Name: "/" + process.env.USER_ID + "_site_1", Config: { ExposedPorts: { "80/tcp": {}, "8081/tcp": {} } } },
+        		{ ID: 2, Image: "ubuntu", Name: "/" + os.hostname() + "_site_1", Config: { ExposedPorts: { "80/tcp": {}, "8081/tcp": {} } } }];
+       	 
+			var filtered = _.filter(containers, filters.filterFunction("compose", { "project": "$USER_ID", "service": "site" }));
+			expect(filtered.length).to.eq(1);
+			expect(filtered[0].ID).to.eq(1);
+        });
+    });
+
+    describe("transformValues()", function(){
+        it("should look up reserved variable values in configuration", function(){
+        	var containers = [{ ID: 1, Image: "ubuntu", Name: "/" + process.env.USER_ID + "_site_1", Config: { ExposedPorts: { "80/tcp": {}, "8081/tcp": {} } } },
+        		{ ID: 2, Image: "ubuntu", Name: "/" + os.hostname() + "_site_1", Config: { ExposedPorts: { "80/tcp": {}, "8081/tcp": {} } } }];
+       	 
+			var filtered = _.filter(containers, filters.filterFunction("compose", { "project": "%HOSTNAME", "service": "site" }));
+			expect(filtered.length).to.eq(1);
+			expect(filtered[0].ID).to.eq(2);
         });
     });
 });

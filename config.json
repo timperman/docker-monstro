@@ -14,31 +14,10 @@
                     "swarm": "dev",
                     "filters": {
                         "compose": {
-                            "project": "brett",
+                            "project": "dev",
                             "service": "site"
                         },
                         "exposedPort": 8080
-                    },
-                    "headers": {
-                        "CustomHeader": "value"
-                    }
-                },
-                "/cms": { 
-                    "swarm": "dev",
-                    "filters": {
-                        "image": "cms:latest"
-                    }
-                }
-            }
-        },
-        {
-            "port": 27017,
-            "paths": {
-                "/": { 
-                    "swarm": "dev",
-                    "filters": {
-                        "hostname": { "matchType": "compose" },
-                        "exposedPort": 27017
                     }
                 }
             }

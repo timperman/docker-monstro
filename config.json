@@ -1,7 +1,9 @@
 {
     "api": { "port": 9999 },
     "swarm": {
-            "dev": null
+            "dev": {
+                "fromEnvironment": true
+            }
         },
     "servers": [
         {

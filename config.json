@@ -1,10 +1,7 @@
 {
     "api": { "port": 9999 },
     "swarm": {
-            "dev": {
-                "host": "http://10.3.152.222",
-                "port": 2376
-            }
+            "dev": null
         },
     "servers": [
         {

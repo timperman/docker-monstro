@@ -37,18 +37,23 @@ describe("Filters", function(){
     describe("image()", function(){
         it("should filter containers with the image name", function(){
         	var containers = [
-				{ ID: 1, Image: "ubuntu" },
-				{ ID: 2, Image: "redis" },
-				{ ID: 3, Image: "custom/container" },
+				{ ID: 1, Image: "ubuntu:latest" },
+				{ ID: 2, Image: "redis:latest" },
+				{ ID: 3, Image: "custom/container:latest" },
 				{ ID: 4, Image: "custom/container:v1" },
 				{ ID: 5, Image: "custom/container:v1" }
 			];
        	 
-			expect(_.filter(containers, filters.filterFunction("image", "redis")).length).to.be.eq(1);
-			expect(_.filter(containers, filters.filterFunction("image", "custom/container")).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", "redis:latest")).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", "custom/container:latest")).length).to.be.eq(1);
 			expect(_.filter(containers, filters.filterFunction("image", "custom/container:v1")).length).to.be.eq(2);
 			expect(_.filter(containers, filters.filterFunction("image", "custom/container:v2")).length).to.be.eq(0);
 			
+
+			expect(_.filter(containers, filters.filterFunction("image", { name: "redis" })).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", { name: "custom/container" })).length).to.be.eq(1);
+			expect(_.filter(containers, filters.filterFunction("image", { name: "custom/container", tag: "v1" })).length).to.be.eq(2);
+			expect(_.filter(containers, filters.filterFunction("image", { name: "custom/container", tag: "v2" })).length).to.be.eq(0);
         });
     });
 

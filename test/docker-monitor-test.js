@@ -7,7 +7,7 @@ var monitor = rewire("../lib/docker-monitor.js"),
 	mockRxEventStream = { observable: {}, attach: sinon.spy() },
 	mockDocker = sinon.stub(),
 	mockDockerNode = { listContainers: sinon.stub(), getContainer: function() {}, getEvents: sinon.stub() },
-	mockRepository = { get: sinon.stub(), contains: sinon.stub(), add: sinon.spy(), remove: sinon.spy() };
+	mockRepository = { get: sinon.stub(), clear: sinon.stub(), loadContainers: sinon.stub(), contains: sinon.stub(), add: sinon.spy(), remove: sinon.spy() };
 
 var devConfig = {
     host: "192.168.99.101",
@@ -141,4 +141,14 @@ describe("Docker monitor", function(){
 			expect(target).to.eq("http://2.1:1234");
 		});
 	});
+
+    describe("reloadContainers()", function() {
+        it("should call load function on repository", function() {
+            var dockerMonitor = monitor({ dev: devConfig, test: testConfig });
+
+            dockerMonitor.reloadContainers();
+            expect(mockRepository.clear).to.have.been.called;
+            expect(mockRepository.loadContainers).to.have.been.called;
+        });
+    });
 });

@@ -10,6 +10,7 @@
         },
     "servers": [
         {
+            "debug": true,
             "port": 8080,
             "paths": {
                 "/": { 

@@ -37,11 +37,11 @@ describe("Filters", function(){
     describe("image()", function(){
         it("should filter containers with the image name", function(){
         	var containers = [
-				{ ID: 1, Image: "ubuntu:latest" },
-				{ ID: 2, Image: "redis:latest" },
-				{ ID: 3, Image: "custom/container:latest" },
-				{ ID: 4, Image: "custom/container:v1" },
-				{ ID: 5, Image: "custom/container:v1" }
+				{ ID: 1, Config: { Image: "ubuntu:latest" } },
+				{ ID: 2, Config: { Image: "redis:latest" } },
+				{ ID: 3, Config: { Image: "custom/container:latest" } },
+				{ ID: 4, Config: { Image: "custom/container:v1" } },
+				{ ID: 5, Config: { Image: "custom/container:v1" } }
 			];
        	 
 			expect(_.filter(containers, filters.filterFunction("image", "redis:latest")).length).to.be.eq(1);

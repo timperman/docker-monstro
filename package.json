@@ -1,6 +1,6 @@
 {
   "name": "docker-monstro",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A configurable dynamic proxy for Docker Swarm clusters.",
   "main": "lib/index.js",
   "repository": "timperman/docker-monstro",

@@ -16,7 +16,8 @@ describe("Proxy utils", function() {
 				paths: {
 					"/": { name: "default" },
 					"api": { name: "api" },
-					"/context1/": { name: "context1" }
+					"/context1/": { name: "context1" },
+					"/context2": { name: "context2" }
 				}
 			};
 
@@ -31,6 +32,9 @@ describe("Proxy utils", function() {
 
 			mockUrl.parse.returns({ pathname: "/context1/endpoint" });
 			expect(proxyUtils.resolvePath(serverConfig, { url: "" }).name).to.eq("context1");
+
+			mockUrl.parse.returns({ pathname: "/context2" });
+			expect(proxyUtils.resolvePath(serverConfig, { url: "" }).name).to.eq("context2");
 		});
 	});
 });

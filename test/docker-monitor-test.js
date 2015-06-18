@@ -120,8 +120,8 @@ describe("Docker monitor", function(){
 	describe("getProxyTarget", function() {
 		it("should filter containers in repository", function() {
 			var dockerMonitor = monitor({ dev: devConfig });
-			var container1 = { Id: 1, Node: { IP: "1.1" }, Config: { ExposedPorts: { "8080/tcp": {} } }, NetworkSettings: { Ports: { "8080/tcp": [ { HostPort: 1234 } ] } } };
-			var container2 = { Id: 2, Node: { IP: "1.2" }, Config: { ExposedPorts: { "9080/tcp": {} } }, NetworkSettings: { Ports: { "9080/tcp": [ { HostPort: 5678 } ] } } };
+			var container1 = { Id: 1, Node: { IP: "1.1" }, Config: { ExposedPorts: { "8080/tcp": {} } }, NetworkSettings: { Ports: { "8080/tcp": [ { HostIp: "1.1", HostPort: 1234 } ] } } };
+			var container2 = { Id: 2, Node: { IP: "1.2" }, Config: { ExposedPorts: { "9080/tcp": {} } }, NetworkSettings: { Ports: { "9080/tcp": [ { HostIp: "1.2", HostPort: 5678 } ] } } };
 
 			mockRepository.get.returns([ container1, container2 ]);
 
@@ -134,7 +134,7 @@ describe("Docker monitor", function(){
 		it("should match exposed port", function() {
 			var dockerMonitor = monitor({ dev: devConfig });
 			var container1 = { Node: { IP: "2.1" }, Config: { ExposedPorts: { "9080/tcp": {}, "8080/tcp": {} } },
-				NetworkSettings: { Ports: { "9080/tcp": [ { HostPort: 9876 } ], "8080/tcp": [ { HostPort: 1234 }, { HostPort: 4567 } ] } } };
+				NetworkSettings: { Ports: { "9080/tcp": [ { HostIp: "2.1", HostPort: 9876 } ], "8080/tcp": [ { HostIp: "2.1", HostPort: 1234 }, { HostIp: "2.1", HostPort: 4567 } ] } } };
 
 			mockRepository.get.returns([ container1 ]);
 			var target = dockerMonitor.getProxyTarget({ swarm: "dev", filters: { exposedPort: 8080 } });

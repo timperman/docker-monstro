@@ -9,7 +9,7 @@ var monstro = rewire("../lib/index.js"),
 	mockHttp = { createServer: sinon.stub() },
 	mockHttpProxy = { createProxyServer: sinon.stub() },
 	mockProxy = { web: sinon.spy() },
-	mockServer = { listen: sinon.spy() };
+	mockServer = { listen: sinon.spy(), on: sinon.stub() };
 
 before(function() {
 	mockMonitor.returns(mockDockerMonitor);
